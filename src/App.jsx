@@ -1,40 +1,75 @@
 import { useState } from "react"
+import List from './components/List'
+
+let counter = 4;
 
 export default function App() {
     const [todo, setTodo] = useState([
-        'Lavar platos',
-        'Lavar ropa',
-        'Tarea prueba',
-        'Tarea prueba 2'
+        {
+            id: 1,
+            name: 'Lavar platos'
+        },
+        {
+            id: 2,
+            name: 'Lavar ropa'
+        },
+        {
+            id: 3,
+            name: 'Tarea prueba'
+        }
     ])
 
-    const [task, newTask] = useState('')
+    const [inProgress, setInProgess] = useState([])
+    const [done, setDone] = useState([])
 
-    function onInputChange(event) {
+    const [newTask, setNewTask] = useState('')
+
+    const onInputChange = (event) => {
         const newValue = event.target.value
-        newTask(newValue)
+        setNewTask(newValue)
     }
 
-    function addTodo(event) {
+    const addTodo = (event) => {
         event.preventDefault();
-        const newTasks = [...todo, task]
+        const newTasks = [...todo, { id: counter, name: newTask }]
         setTodo(newTasks)
-        newTask('')
+        setNewTask('')
+        counter++
+    }
+
+    const deleteTodo = (id) => {
+        const newTasks = todo.filter((task) => task.id != id)
+        setTodo(newTasks)
+    }
+
+    const checkTodo = (id) => {
+        const task = todo.filter((task) => task.id == id)
+        deleteTodo(id)
+        setInProgess([...inProgress, task[0]])
     }
 
     return <>
-        <h1>TODO</h1>
-        <ul>
-            {
-                todo.map(function (task) {
-                    return <li>{task}</li>
-                })
-            }
-        </ul>
+        <List
+            name='TODO'
+            tasks={todo}
+            checkF={checkTodo}
+            deleteF={deleteTodo}
+        />
+        <List
+            name='In progress'
+            tasks={inProgress}
+            checkF={null}
+            deleteF={null}
+        />
+        <List
+            name='Done'
+            tasks={done}
+            deleteF={null}
+        />
         <form onSubmit={addTodo}>
             <input
                 type="text"
-                value={task}
+                value={newTask}
                 onChange={onInputChange}
             />
             <button type="submit">Submit</button>
