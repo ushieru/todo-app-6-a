@@ -49,30 +49,42 @@ export default function App() {
     }
 
     return <>
-        <List
-            name='TODO'
-            tasks={todo}
-            checkF={checkTodo}
-            deleteF={deleteTodo}
-        />
-        <List
-            name='In progress'
-            tasks={inProgress}
-            checkF={null}
-            deleteF={null}
-        />
-        <List
-            name='Done'
-            tasks={done}
-            deleteF={null}
-        />
-        <form onSubmit={addTodo}>
-            <input
-                type="text"
-                value={newTask}
-                onChange={onInputChange}
-            />
-            <button type="submit">Submit</button>
-        </form>
+        <div className="h-screen w-screen flex flex-col justify-center items-center">
+            <div className="flex w-full justify-evenly mb-10">
+                <List
+                    name='TODO'
+                    tasks={todo}
+                    checkF={checkTodo}
+                    deleteF={deleteTodo}
+                />
+                <List
+                    name='In progress'
+                    tasks={inProgress}
+                    checkF={null}
+                    deleteF={null}
+                />
+                <List
+                    name='Done'
+                    tasks={done}
+                    deleteF={null}
+                />
+            </div>
+            <div>
+                <form onSubmit={addTodo}>
+                    <input
+                        type="text"
+                        value={newTask}
+                        onChange={onInputChange}
+                        className="border border-black rounded"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-blue-500 text-white px-2 rounded ml-4"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
     </>
 }
